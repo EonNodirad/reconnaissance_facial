@@ -1,0 +1,32 @@
+FROM python:3.11-slim
+
+# Installation des dépendances système nécessaires
+RUN apt-get update && apt-get install -y \
+    cmake \
+    build-essential \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgomp1 \
+    libopenblas-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Définir le répertoire de travail
+WORKDIR /reconnaissance_facial
+
+# Copier les fichiers de requirements
+COPY requirements.txt .
+
+# Installer les dépendances Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code de l'application
+COPY . .
+
+# Créer les répertoires nécessaires
+RUN mkdir -p data/faces data/encodings
+
+# Commande par défaut
+CMD ["python", "main.py"]

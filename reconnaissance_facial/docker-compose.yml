@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  #reconnaissance de la personne
+  reconnaissance_facial:
+    build: .
+    container_name: reconnaissance_faciale
+    environment:
+      - DISPLAY=host.docker.internal:0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./data:/reconnaissance_facial/data
+    devices:
+      - /dev/video0:/dev/video0
+    stdin_open: true
+    tty: true
+    privileged: true
